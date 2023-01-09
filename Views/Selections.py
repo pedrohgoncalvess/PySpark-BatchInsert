@@ -7,7 +7,7 @@ estabelecimentos = initDataframe()
 
 
 
-def views():
+class Views():
 
     estabelecimentos.select('cnpj_basico','cnpj_ordem','situacao_especial').show(5,False)
     estabelecimentos.select('cnpj_basico','cnpj_ordem','situacao_especial',f.year('data_situacao_cadastral').alias('ano_situ_cadast')).show(5,False)
