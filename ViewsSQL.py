@@ -20,7 +20,6 @@ def viewOne():
     query = "select * from empresasview"
     return session().sql(query).show(5)
 
-viewOne()
 
 
 

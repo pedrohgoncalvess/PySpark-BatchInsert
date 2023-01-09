@@ -7,15 +7,19 @@ from psycopg2 import connect
 from psycopg2.extras import execute_values
 from typing import Iterable,List,Tuple
 from types import FunctionType
+from typing import Tuple
 
 
-lenght_tuple = 10000000
-df = treatmentEstabelecimentos().select('cnpj_basico','nome_fantasia','bairro','uf','municipio').limit(lenght_tuple)
+def tupla():
+    lenght_tuple = 10000000
+    df = treatmentEstabelecimentos().select('cnpj_basico','nome_fantasia','bairro','uf','municipio').limit(lenght_tuple)
 
 
-l = []
-for i in df.collect():
-    l.append(tuple(i))
+    l = []
+    for i in df.collect():
+        l.append(tuple(i))
+
+    return l
 
 
 def connect():
@@ -43,8 +47,7 @@ def temp_execucao(func:FunctionType) -> FunctionType:
 
 
 @temp_execucao
-def insert_db():
+def insert_db(l:Tuple):
     return connect().cursor().executemany("insert into business values(%s,%s,%s,%s,%s)",l)
 
-insert_db()
 
