@@ -1,4 +1,4 @@
-from InitSpark import initDataframe, initSparkSession as session
+from __init__ import initDataframe, initSparkSession as session
 
 from pyspark.sql import functions as f #IMPORTANDO FUNÇOES DO SPARK
 from pyspark.sql.types import DateType,StringType,DoubleType  #IMPORTANDO TIPOS DE COLUNAS
@@ -44,8 +44,6 @@ def replaceFill(estabelecimentos:pyspark.sql.dataframe.DataFrame) -> pyspark.sql
     estabelecimentos.na.fill('n')
 
     return estabelecimentos
-
-
 
 
 

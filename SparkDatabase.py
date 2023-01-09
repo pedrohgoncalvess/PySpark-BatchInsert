@@ -4,12 +4,10 @@ from datetime import timedelta
 from Treatment import treatmentEstabelecimentos
 from Database import connect
 
-from types import FunctionType
 from typing import Tuple
 
 from pandas.core.series import Series
 from pyspark.sql.dataframe import DataFrame
-import pyspark
 
 
 def tupla(index_inicio: int, index_final:int, df) -> Tuple:
@@ -23,18 +21,18 @@ def tupla(index_inicio: int, index_final:int, df) -> Tuple:
 def iterador(dataframe: DataFrame, column:Series):
     iterador_index = 500000
     count = dataframe[column].count()
-    print(count)
     cursor = connect().cursor()
     tempo_inicial_process = datetime.datetime.now()
 
     inserts = 0
     index_inicio = 1
-    index_final = 500000
+    index_final = iterador_index
     registros = 0
+    print("Começando inserts")
 
     while inserts < count:
 
-        insert = tupla(index_inicio,index_final,estabelecimentos)
+        insert = tupla(index_inicio,index_final,dataframe)
 
         tempo_inicial = datetime.datetime.now()
         cursor.executemany("insert into business values(%s,%s,%s,%s,%s)", insert)
@@ -56,12 +54,15 @@ def iterador(dataframe: DataFrame, column:Series):
     print(f'Para inserir todos os registros no banco, levou {timedelta(minutes=tempo_final_process.minute,seconds=tempo_final_process.second,hours=tempo_final_process.hour) - timedelta(minutes=tempo_inicial_process.minute,seconds=tempo_inicial_process.second,hours=tempo_inicial_process.hour)}')
 
 
+def main():
+    print("Começando operação")
+    estabelecimentos = treatmentEstabelecimentos().select('cnpj_basico', 'nome_fantasia', 'bairro', 'uf', 'municipio')
+    estabelecimentos = estabelecimentos.toPandas()
+    iterador(estabelecimentos,'uf')
 
-print("Começando operação")
-estabelecimentos = treatmentEstabelecimentos().select('cnpj_basico', 'nome_fantasia', 'bairro', 'uf', 'municipio')
-estabelecimentos = estabelecimentos.toPandas()
-iterador(estabelecimentos,'uf')
 
+if __name__ == '__main__':
+    main()
 
 
 

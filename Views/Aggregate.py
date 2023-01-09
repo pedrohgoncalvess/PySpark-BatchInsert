@@ -1,4 +1,4 @@
-from InitSpark import initDataframe, initSparkSession
+from __init__ import initDataframe, initSparkSession
 from pyspark.sql import functions as f
 
 from types import FunctionType
@@ -24,7 +24,5 @@ def viewDtCadast():
         where("ano >= '2010'").\
         groupBy('ano').\
         count().orderBy('ano',ascending=True).show()    #TEM QUE USAR O ALIAS PARA PASSAR O GROUPBY E O ORDERBY
-
-viewDtCadast()
 
 
