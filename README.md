@@ -14,6 +14,11 @@
 even with a performance oriented script and good database practices it took an average of 10 minutes to insert 4.5M rows.</p>
 
 
+<p>Although pyspark provides some connections with more performance, I haven't found a better connection between pyspark and postgresql than psycopg2, I've used it to perform the batch insert.
+
+first you will need the package psycopg2 ```pip install psycopg2``` along with pyspark <i>(you can install anyway)</i>, the rest is in the codes</p>
+
+
 <h2>Archives</h2>
 
 > .env
